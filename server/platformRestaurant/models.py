@@ -49,13 +49,19 @@ class Room(models.Model):
     room_zipcode = models.CharField("code Postal", max_length=12,)
     room_city = models.CharField("ville", max_length=128,)
     room_title = models.CharField("titre", max_length=500,)
-    room_description = models.TextField("description", max_length=512, blank=True, null=True)
-    room_informations_pratiques = models.TextField("informations pratiques", max_length=1024, blank=True, null=True)
     room_is_active = models.BooleanField("atelier actif")
     room_is_validated = models.BooleanField("atelier valide")
     
     def __str__(self):
         return self.room_title
+
+class Info(models.Model): 
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    map_google = models.CharField("password", max_length=800)
+    informations = models.TextField("description", max_length=512, blank=True, null=True)
+    
+    
+    
 
 
 

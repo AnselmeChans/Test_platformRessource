@@ -3,7 +3,7 @@ from rest_auth.registration.serializers import RegisterSerializer
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 
-from .models import User
+from .models import User, Info, Room
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -60,3 +60,16 @@ class TokenSerializer(serializers.ModelSerializer):
             'is_particular': is_particular,
             'is_enterprise': is_enterprise
         }
+
+
+
+class InfoSerializer(serializers.ModelSerializer):
+    class Meta: 
+        model = Info 
+        field = "__all__"
+
+class RoomSerialiser(serializers.ModelSerializer):
+    class Meta: 
+        model = Room 
+        field = "__all__"
+        
