@@ -14,7 +14,7 @@ export default class Navbar extends Component {
                     <ul className="navbar-nav m-auto">
 
                         <li className="nav-item active">
-                            <Link className="nav-link text-white text-uppercase ml-5" to="/home">Home <span className="sr-only">(current)</span></Link>
+                            <Link className="nav-link text-white text-uppercase ml-5" to="/">Home <span className="sr-only">(current)</span></Link>
                         </li>
 
                         <li className="nav-item">

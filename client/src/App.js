@@ -8,14 +8,13 @@ import Home from './components/pages/Home';
 import Contact from './components/pages/Contact';
 import Ressources from './components/pages/Ressources';
 import NotFoundPage from './components/pages/NotFoundPage';
-import {BrowserRouter, Switch, Route} from 'react-router-dom';
+import {Switch, Route} from 'react-router-dom';
 
 
 
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
         <Navbar></Navbar>
         <Switch>
           <Route exact path="/" component={Home}></Route>
@@ -23,7 +22,7 @@ function App() {
           <Route path="/contact" component={Contact}></Route>
           <Route component={NotFoundPage}></Route>
         </Switch>
-      </BrowserRouter>
+
       
       <Footer></Footer>
     </div>
