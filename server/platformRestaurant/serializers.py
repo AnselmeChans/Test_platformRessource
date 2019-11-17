@@ -9,7 +9,7 @@ from .models import User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('email', 'username', 'password', 'is_student', 'is_teacher')
+        fields = ('email', 'username', 'password', 'is_particular', 'is_enterprise')
 
 
 class CustomRegisterSerializer(RegisterSerializer):
@@ -18,14 +18,14 @@ class CustomRegisterSerializer(RegisterSerializer):
 
     class Meta:
         model = User
-        fields = ('user_firstname', 'user_lastname', 'user_email', 'user_password', 'user_birthdate')
+        fields = ('username', 'user_lastname', 'email', 'password', 'user_birthdate')
 
     def get_cleaned_data(self):
         return {
-            'user_firstname': self.validated_data.get('user_firstname', ''),
+            'username': self.validated_data.get('username', ''),
             'user_lastname': self.validated_data.get('user_lastname', ''),
-            'user_email': self.validated_data.get('user_email', ''),
-            'user_password': self.validated_data.get('user_password', ''),
+            'email': self.validated_data.get('email', ''),
+            'password': self.validated_data.get('password', ''),
             'user_birthdate': self.validated_data.get('user_birthdate', ''),
             'user_birthdate': self.validated_data.get('user_birthdate', ''),
             'is_particular': self.validated_data.get('is_particular', ''),

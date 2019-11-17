@@ -12,16 +12,16 @@ from multiselectfield import MultiSelectField
 
 
 class User(AbstractUser):
-    user_firstname = models.CharField("prénom", max_length=200, )
+    username = models.CharField("prénom", max_length=200,  unique=True, default="", editable=False)
     user_lastname = models.CharField("nom", max_length=200, )
-    user_email = models.EmailField("email", max_length=70, unique=True,)
-    user_password = models.CharField("password", max_length=50,)
+    email = models.EmailField("email", max_length=70, unique=True,)
+    password = models.CharField("password", max_length=50,)
     user_birthdate = models.DateField("date d'anniversaire")
     user_created_on = models.DateField("date de création compte", default=date.today,)
     user_last_login = models.DateField('login', default=date.today)
     user_is_active = models.BooleanField("is active", default=False)  
-    is_particular = models.BooleanField()
-    is_enterprise = models.BooleanField()
+    is_particular = models.BooleanField(default=False)
+    is_enterprise = models.BooleanField(default=False)
     # user_profile_picture = models.ImageField("image de profil du user", upload_to=get_image_path, blank=True, null=True,)
 
     def __str__(self):
