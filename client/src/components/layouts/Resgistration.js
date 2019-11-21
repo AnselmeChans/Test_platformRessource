@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 
 import {Link, Redirect} from "react-router-dom";
 
-import {auth} from "../actions";
+import auth from "../../actions/auth";
 
 class Login extends Component {
 
