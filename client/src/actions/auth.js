@@ -1,126 +1,125 @@
-export const loadUser = () => {
-    return (dispatch, getState) => {
-        dispatch({type: "USER_LOADING"});
+import axios from "axios";
+import { returnErrors } from "./messages";
 
-        const token = getState().auth.token;
+import {
+  USER_LOADED,
+  USER_LOADING,
+  AUTH_ERROR,
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
+  LOGOUT_SUCCESS,
+  REGISTER_SUCCESS,
+  REGISTER_FAIL
+} from "./types";
 
-        let headers = {
-            "Content-Type": "application/json",
-        };
+// CHECK TOKEN & LOAD USER
+export const loadUser = () => (dispatch, getState) => {
+  // User Loading
+  dispatch({ type: USER_LOADING });
 
-        if (token) {
-            headers["Authorization"] = `Token ${token}`;
-        }
-        return fetch("/api/auth/user/", {headers, })
-            .then(res => {
-                if (res.status < 500) {
-                    return res.json().then(data => {
-                        return {status: res.status, data};
-                    })
-                } else {
-                    console.log("Server Error!");
-                    throw res;
-                }
-            })
-            .then(res => {
-                if (res.status === 200) {
-                    dispatch({type: 'USER_LOADED', user: res.data });
-                    return res.data;
-                } else if (res.status >= 400 && res.status < 500) {
-                    dispatch({type: "AUTHENTICATION_ERROR", data: res.data});
-                    throw res.data;
-                }
-            })
+  axios
+    .get("/api/auth/user", tokenConfig(getState))
+    .then(res => {
+      dispatch({
+        type: USER_LOADED,
+        payload: res.data
+      });
+    })
+    .catch(err => {
+      dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: AUTH_ERROR
+      });
+    });
+};
+
+// LOGIN USER
+export const login = (username, password) => dispatch => {
+  // Headers
+  const config = {
+    headers: {
+      "Content-Type": "application/json"
     }
-}
+  };
 
-export const login = (username, password) => {
-    return (dispatch, getState) => {
-        let headers = {"Content-Type": "application/json"};
-        let body = JSON.stringify({username, password});
+  // Request Body
+  const body = JSON.stringify({ username, password });
 
-        return fetch("/api/auth/login/", {headers, body, method: "POST"})
-            .then(res => {
-                if (res.status < 500) {
-                    return res.json().then(data => {
-                        return {status: res.status, data};
-                    })
-                } else {
-                    console.log("Server Error!");
-                    throw res;
-                }
-            })
-            .then(res => {
-                if (res.status === 200) {
-                    dispatch({type: 'LOGIN_SUCCESSFUL', data: res.data });
-                    return res.data;
-                } else if (res.status === 403 || res.status === 401) {
-                    dispatch({type: "AUTHENTICATION_ERROR", data: res.data});
-                    throw res.data;
-                } else {
-                    dispatch({type: "LOGIN_FAILED", data: res.data});
-                    throw res.data;
-                }
-            })
+  axios
+    .post("http://127.0.0.1:8000/users/api/auth/login", body, config)
+    .then(res => {
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: res.data
+      });
+    })
+    .catch(err => {
+      dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: LOGIN_FAIL
+      });
+    });
+};
+
+// REGISTER USER
+export const register = ({ username, password, email }) => dispatch => {
+  // Headers
+  const config = {
+    headers: {
+      "Content-Type": "application/json"
     }
-}
+  };
 
-export const register = (username, password) => {
-    return (dispatch, getState) => {
-        let headers = {"Content-Type": "application/json"};
-        let body = JSON.stringify({username, password});
+  // Request Body
+  const body = JSON.stringify({ username, email, password });
 
-        return fetch("/api/auth/register/", {headers, body, method: "POST"})
-            .then(res => {
-                if (res.status < 500) {
-                    return res.json().then(data => {
-                        return {status: res.status, data};
-                    })
-                } else {
-                    console.log("Server Error!");
-                    throw res;
-                }
-            })
-            .then(res => {
-                if (res.status === 200) {
-                    dispatch({type: 'REGISTRATION_SUCCESSFUL', data: res.data });
-                    return res.data;
-                } else if (res.status === 403 || res.status === 401) {
-                    dispatch({type: "AUTHENTICATION_ERROR", data: res.data});
-                    throw res.data;
-                } else {
-                    dispatch({type: "REGISTRATION_FAILED", data: res.data});
-                    throw res.data;
-                }
-            })
+  axios
+    .post("http://127.0.0.1:8000/users/api/auth/register", body, config)
+    .then(res => {
+      dispatch({
+        type: REGISTER_SUCCESS,
+        payload: res.data
+      });
+    })
+    .catch(err => {
+      dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: REGISTER_FAIL
+      });
+    });
+};
+
+// LOGOUT USER
+export const logout = () => (dispatch, getState) => {
+  axios
+    .post("/api/auth/logout/", null, tokenConfig(getState))
+    .then(res => {
+      dispatch({ type: 'CLEAR_LEADS' });
+      dispatch({
+        type: LOGOUT_SUCCESS
+      });
+    })
+    .catch(err => {
+      dispatch(returnErrors(err.response.data, err.response.status));
+    });
+};
+
+// Setup config with token - helper function
+export const tokenConfig = getState => {
+  // Get token from state
+  const token = getState().auth.token;
+
+  // Headers
+  const config = {
+    headers: {
+      "Content-Type": "application/json"
     }
-}
+  };
 
-export const logout = () => {
-    return (dispatch, getState) => {
-        let headers = {"Content-Type": "application/json"};
+  // If token, add to headers config
+  if (token) {
+    config.headers["Authorization"] = `Token ${token}`;
+  }
 
-        return fetch("/api/auth/logout/", {headers, body: "", method: "POST"})
-            .then(res => {
-                if (res.status === 204) {
-                    return {status: res.status, data: {}};
-                } else if (res.status < 500) {
-                    return res.json().then(data => {
-                        return {status: res.status, data};
-                    })
-                } else {
-                    console.log("Server Error!");
-                    throw res;
-                }
-            })
-            .then(res => {
-                if (res.status === 204) {
-                    dispatch({type: 'LOGOUT_SUCCESSFUL'});
-                    return res.data;
-                } else if (res.status === 403 || res.status === 401) {
-                    dispatch({type: "AUTHENTICATION_ERROR", data: res.data});
-                    throw res.data;
-                }
-            })
-    }
-}
+  return config;
+};

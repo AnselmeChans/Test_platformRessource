@@ -1,10 +1,16 @@
-from rest_framework import viewsets
 from rest_framework import generics, permissions
-
-from rest_framework import generics, permissions
+from .models import Room
 from rest_framework.response import Response
 from knox.models import AuthToken
-from .serializers import UserSerializer, RegisterSerializer, LoginSerializer, RoomSerialiser, InfoSerializer
+from .serializers import UserSerializer, RegisterSerializer, LoginSerializer, RoomSerialiser
+from rest_framework.serializers import ModelSerializer, SerializerMethodField
+from rest_framework.viewsets import ModelViewSet
+from django.views.generic import ListView
+
+
+from rest_framework.views import APIView
+
+
 
 # Register API
 class RegisterAPI(generics.GenericAPIView):
@@ -42,3 +48,9 @@ class UserAPI(generics.RetrieveAPIView):
   def get_object(self):
     return self.request.user
 
+
+class RoomAPI(APIView):
+  def get(self, request): 
+    room = [r for r in Room.objects.all()]
+    return Response(room)
+  
