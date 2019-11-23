@@ -26,8 +26,8 @@ import Home from './components/pages/Home';
 import Contact from './components/pages/Contact';
 import Ressources from './components/pages/Ressources';
 import NotFoundPage from './components/pages/NotFoundPage';
-import Register from './components/pages/register';
-import Login from './components/pages/Login';
+import Register from './components/layouts/Register';
+import Login from './components/layouts/Login';
 
 
 // ------------------------------- PLATFORM RESSOURCES APP --------------------------------------
@@ -58,7 +58,7 @@ class RootContainerComponent extends Component {
       return (
           <BrowserRouter>
               <Switch>
-                  <PrivateRoute exact path="/" component={Ressources} />
+                  <PrivateRoute exact path="/" component={Home} />
                   <Route exact path="/register" component={Register} />
                   <Route exact path="/login" component={Login} />
                   <Route path="/contact" component={Contact}></Route>
