@@ -1,0 +1,63 @@
+version: '3.2'
+
+services:
+
+   # POSTGRE DATABASE SERVICES
+  postgres:
+    restart: 'always'
+    expose: 
+      - 5432
+    ports:
+      - 5432
+    env_file:
+      - global_env.env
+    build: './database'
+    volumes:
+      - "./database/postgres-passport:/docker-entrypoint-initdb.d"
+      - "./database/data/postgres_passport_data:/var/lib/postgresql/data"
+    networks:
+      infranet:
+        aliases:
+          - 'postgres'
+
+
+  # DATA API SERVICES
+
+  server: 
+
+    restart: 'always'
+    build: ./server
+    
+    expose: 
+      - 8000
+    ports: 
+      - 8000:8000
+    env_file:
+      - global_env.env
+    volumes: 
+      - "./server:/usr/src/app"
+  
+  
+  client: 
+
+    restart: 'always'
+    build: ./client
+    
+    expose: 
+      - 3000
+    ports: 
+      - 3000:3000
+    
+    volumes: 
+      - "./server/src:/usr/src/app/src"
+      - "./client/public:/usr/src/app/public"
+    links:
+      - "server:server"
+
+    
+   
+    
+
+
+networks:
+  infranet:
