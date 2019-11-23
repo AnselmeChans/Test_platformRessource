@@ -3,7 +3,7 @@ from rest_framework import serializers
 from django.contrib.auth import authenticate
 
 
-from .models import User, Info, Room
+from .models import User, Room
 
 
 # User Serializer
@@ -40,11 +40,6 @@ class LoginSerializer(serializers.Serializer):
       return user
     raise serializers.ValidationError("Incorrect Credentials")
 
-
-class InfoSerializer(serializers.ModelSerializer):
-    class Meta: 
-        model = Info 
-        field = "__all__"
 
 class RoomSerialiser(serializers.ModelSerializer):
     class Meta: 

@@ -47,6 +47,9 @@ class Room(models.Model):
     room_title = models.CharField("titre", max_length=500,)
     room_is_active = models.BooleanField("atelier actif")
     room_is_validated = models.BooleanField("atelier valide")
+    longitude = models.CharField("longitude", max_length=100)
+    latitude = models.CharField("latitude", max_length=100)
+    informations = models.TextField("description", max_length=512, blank=True, null=True)
     
     def __str__(self):
         return self.room_title
@@ -55,11 +58,7 @@ class Reservation(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
 
-class Info(models.Model): 
-    room = models.ForeignKey(Room, on_delete=models.CASCADE)
-    longitude = models.CharField("longitude", max_length=100)
-    latitude = models.CharField("latitude", max_length=100)
-    informations = models.TextField("description", max_length=512, blank=True, null=True)
+    
     
     
     
