@@ -47,9 +47,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'corsheaders',
     'rest_auth',
-    'rest_auth.registration',
     'rest_framework',
-    'rest_framework.authtoken',
 
     'platformRestaurant',
     'knox',
@@ -75,12 +73,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-
-CORS_ORIGIN_WHITELIST = (
-    # https://github.com/ottoyiu/django-cors-headers/
-    'http://localhost:8080',
-    'http://127.0.0.1:8080',
-)
 
 
 CORS_ALLOW_METHODS = default_methods + (
@@ -110,6 +102,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'server.wsgi.application'
+CORS_ORIGIN_ALLOW_ALL = True   
 
 
 # Database
