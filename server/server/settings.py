@@ -52,18 +52,15 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
 
     'platformRestaurant',
+    'knox',
 
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    ),
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-    ),
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 25,
+    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',)
+}
+REST_KNOX = {
+    'USER_SERIALIZER': 'auth.serializers.UserRetrieveSerializer'
 }
 
 
@@ -156,14 +153,7 @@ ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 AUTH_USER_MODEL = 'platformRestaurant.User'
 
-REST_AUTH_SERIALIZERS = {
-    'USER_DETAILS_SERIALIZER': 'platformRestaurant.serializers.UserSerializer',
-    'TOKEN_SERIALIZER': 'platformRestaurant.serializers.TokenSerializer'
-}
 
-REST_AUTH_REGISTER_SERIALIZERS = {
-    'REGISTER_SERIALIZER': 'platformRestaurant.serializers.CustomRegisterSerializer',
-}
 
 
 

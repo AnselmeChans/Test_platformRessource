@@ -9,7 +9,12 @@ class Login extends Component {
 
     state = {
         username: "",
+        user_lastname: "", 
+        email: "", 
         password: "",
+        user_birthdate: "", 
+        is_particular: "", 
+        is_enterprise: ""
     }
 
     onSubmit = e => {
@@ -38,12 +43,36 @@ class Login extends Component {
                             type="text" id="username"
                             onChange={e => this.setState({username: e.target.value})} />
                     </p>
+
+                    <p>
+                        <label htmlFor="user_lastname">Last Name </label>
+                        <input
+                            type="user_lastname" id="user_lastname"
+                            onChange={e => this.setState({user_lastname: e.target.value})} />
+                    </p>
+                    <p>
+                        <label htmlFor="email">Email</label>
+                        <input
+                            type="email" id="email"
+                            onChange={e => this.setState({email: e.target.value})} />
+                    </p>
+
                     <p>
                         <label htmlFor="password">Password</label>
                         <input
                             type="password" id="password"
                             onChange={e => this.setState({password: e.target.value})} />
                     </p>
+
+                    <p>
+                        <label htmlFor="password">User Birthdate</label>
+                        <input
+                            type="user_birthdate" id="user_birthdate"
+                            onChange={e => this.setState({user_birthdate: e.target.value})} />
+                    </p>
+
+                    
+
                     <p>
                         <button type="submit">Register</button>
                     </p>
