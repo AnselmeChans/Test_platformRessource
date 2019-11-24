@@ -75,8 +75,9 @@ export const register = ({ username, password, email }) => dispatch => {
 
   axios
     .post("http://127.0.0.1:8000/users/api/auth/register", body, config)
-    .then(res => {
+    .then(res => {dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({
+        
         type: REGISTER_SUCCESS,
         payload: res.data
       });
