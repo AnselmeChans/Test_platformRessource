@@ -22,7 +22,7 @@ class User(AbstractUser):
     # user_profile_picture = models.ImageField("image de profil du user", upload_to=get_image_path, blank=True, null=True,)
 
     def __str__(self):
-        return self.user_firstname + ' ' + self.user_lastname
+        return self.username + ' ' + self.user_lastname
 
 
 

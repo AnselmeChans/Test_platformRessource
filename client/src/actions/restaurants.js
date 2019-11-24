@@ -4,7 +4,7 @@ import { tokenConfig } from "./auth";
 
 import { GET_RESTAURANTS, DELETE_RESTAURANTS, ADD_RESTAURANTS } from "./types";
 
-// GET LEADS
+// GET Restaurant
 export const getRestaurants = () => (dispatch, getState) => {
   axios
     .get("/api/restaurant/", tokenConfig(getState))
@@ -19,12 +19,12 @@ export const getRestaurants = () => (dispatch, getState) => {
     );
 };
 
-// DELETE LEAD
+// DELETE Restaurant
 export const deleteRestaurant = id => (dispatch, getState) => {
   axios
     .delete(`/api/restaurant/${id}/`, tokenConfig(getState))
     .then(res => {
-      dispatch(createMessage({ deleteRestaurant: "Lead Deleted" }));
+      dispatch(createMessage({ deleteRestaurant: "Restaurant Deleted" }));
       dispatch({
         type: DELETE_RESTAURANTS,
         payload: id
@@ -33,7 +33,7 @@ export const deleteRestaurant = id => (dispatch, getState) => {
     .catch(err => console.log(err));
 };
 
-// ADD LEAD
+// ADD Restaurant
 export const addRestaurant = restaurant => (dispatch, getState) => {
   axios
     .post("/api/restaurant/", restaurant, tokenConfig(getState))
