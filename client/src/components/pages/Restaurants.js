@@ -58,7 +58,7 @@ export class Restaurants extends Component {
 }
 
 const mapStateToProps = state => ({
-  leads: state.leads.leads
+  restaurants: state.restaurants.restaurant
 });
 
 export default connect(

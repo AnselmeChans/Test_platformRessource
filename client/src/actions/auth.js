@@ -44,6 +44,7 @@ export const login = (username, password) => dispatch => {
 
   // Request Body
   const body = JSON.stringify({ username, password });
+  console.log(body)
 
   axios
     .post("http://127.0.0.1:8000/users/api/auth/login", body, config)
@@ -54,6 +55,8 @@ export const login = (username, password) => dispatch => {
       });
     })
     .catch(err => {
+      console.log(err.response)
+      console.log(err.response.data)
       dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({
         type: LOGIN_FAIL
@@ -75,7 +78,7 @@ export const register = ({ username, password, email }) => dispatch => {
 
   axios
     .post("http://127.0.0.1:8000/users/api/auth/register", body, config)
-    .then(res => {dispatch(returnErrors(err.response.data, err.response.status));
+    .then(res => {
       dispatch({
         
         type: REGISTER_SUCCESS,

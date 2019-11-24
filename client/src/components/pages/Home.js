@@ -8,8 +8,7 @@ export default class Home extends Component {
     render() {
         return (
             <Fragment>
-                <Form />
-                <Restaurant />
+      
             </Fragment>
         )
     }
