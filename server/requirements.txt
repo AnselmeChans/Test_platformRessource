@@ -1,0 +1,13 @@
+Django>=2.0
+djangorestframework>=3.7
+django-filter
+django-extensions
+psycopg2
+psycopg2-binary
+django-multiselectfield
+invoke
+faker
+lorem
+django-cors-headers
+django-allauth
+django-rest-auth
