@@ -1,40 +1,36 @@
 #!/bin/bash
 
+echo "*********************************  WELCOMMMMMME TO THE ENTRY POINT SH  *********************************"
 
-set -o errexit
-
-
-readonly REQUIRED_ENV_VARS=(
-  $DB_USER,
-  $DB_PASSWORD,
-  $DB_NAME,
-  $POSTGRE_USER)
+# Required environment variable for the database connection
+readonly REQUIRED_ENV_VARS=($POSTGRES_DB, $POSTGRES_PASSWORD, $DB_NAME_PROJECT, $POSTGRES_USER)
 
 
-main() {
-  check_env_vars_set
+# Principal Main
+main(){
+  check_env_db_connect,
   init_user_and_db
 }
 
-check_env_vars_set() {
-  for required_env_var in ${REQUIRED_ENV_VARS[@]}; do
-    if [[ -z "${!required_env_var}" ]]; then
-      echo "Error:
-    Environment variable '$required_env_var' not set.
-    Make sure you have the following environment variables set:
-      ${REQUIRED_ENV_VARS[@]}
-Aborting."
-      exit 1
-    fi
-  done
-}
+# Function that check if environment connection database habe been set
+check_env_db_connect(){
+  for required_env in ${REQUIRED_ENV_VARS[@]}; do 
+    echo "required env ==> $required_env"
+    if [[ -z "${!required_env}" ]]; then 
+      echo "ERROR : 
+              Environment variable '$required_env_var' not set.
+              Make sure you have the following environment variables set:
+                ${REQUIRED_ENV_VARS[@]}
+              ABORTING !!!!!"
+      exit 1}
 
-
-init_user_and_db() {
-  psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" <<-EOSQL
-     CREATE USER $DB_USER WITH PASSWORD '$DB_PASSWORD';
-     CREATE DATABASE $DB_NAME;
-     GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;
+# Create user, connect and init database
+init_user_and_db(){
+  echo "CREATE and INIT DATABASE"
+  psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
+     CREATE USER '$POSTGRES_USER' WITH PASSWORD '$POSTGRES_PASSWORD';
+     CREATE DATABASE '$POSTGRES_DB';
+     GRANT ALL PRIVILEGES ON DATABASE $POSTGRES_DB TO $POSTGRES_USER;
 EOSQL
 }
 

@@ -2,62 +2,90 @@ version: '3.2'
 
 services:
 
-   # POSTGRE DATABASE SERVICES
+  # ----------------------------------------- POSTGRE DATABASE SERVICES ---------------------------------------------------------
+  
+  # Postgres container
   postgres:
-    restart: 'always'
-    expose: 
-      - 5432
-    ports:
-      - 5432
+
+    restart: always
+
+    # Build the image by reading dockerfile in database dir
+    build: './database'
+
+    # Take password, user, database name from the global_env file
     env_file:
       - global_env.env
-    build: './database'
+    
+    expose: 
+      - 5432
+    
+    ports:
+      - 5432:5432
+    
+    # Creating a volume to preserve database data
     volumes:
       - "./database/postgres-passport:/docker-entrypoint-initdb.d"
-      - "./database/data/postgres_passport_data:/var/lib/postgresql/data"
-    networks:
-      infranet:
-        aliases:
-          - 'postgres'
-
-
+      - ./pgdata:/var/lib/postgresql/data
+      
+  
+  # ----------------------------------------- DATA API SERVICES -------------------------------------------------------------------
   # DATA API SERVICES
-
   server: 
 
     restart: 'always'
+
+    # Build the image server by reading dockerfile in server dir
     build: ./server
-    
+
+    # Name the container to easy attach to it
+    container_name: server
+
     expose: 
       - 8000
+
     ports: 
       - 8000:8000
+
+    # Volume created to edit code without rebuilding container
+    volumes: 
+      - ./server:/home/platformRessources/server
+
+    # Take password, user, database name from the global_env file
     env_file:
       - global_env.env
-    volumes: 
-      - "./server:/usr/src/app"
-  
-  
+
+    # Switch to this sever directory
+    working_dir: /home/platformRessources/server
+
+    # Connect it to the postgres container
+    depends_on:
+      - postgres
+
+    links:
+      - postgres
+    
+  # ------------------------------------------- CLIENT SERVICES -------------------------------------------------------------
   client: 
 
-    restart: 'always'
-    build: ./client
+    restart: always
     
+    # Build the image server by reading Dockerfile in the client dir
+    build: ./client
+
     expose: 
       - 3000
+
     ports: 
       - 3000:3000
-    
-    volumes: 
-      - "./server/src:/usr/src/app/src"
-      - "./client/public:/usr/src/app/public"
-    links:
-      - "server:server"
 
+    # Volume created to edite code without rebuilding container
+    volumes: 
+      - ./client:/home/platformRessources/client
+    
+    # Name the container to easy attach to it
+    container_name: client
+
+    links: 
+      - server
     
    
-    
-
-
-networks:
-  infranet:
